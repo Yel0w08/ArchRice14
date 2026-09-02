@@ -1,22 +1,19 @@
-cls
-echo installing hyperland...
-sudo pacman -S hyprland 
-cls
-echo installing Xorg-xwayland...
-sudo pacman -S xorg-xwayland    
-cls
-echo installing sddm...
-sudo pacman -S sddm 
-cls
-read -rp "Do you want to install  celestia dots ?  [y/N] " answerfordots
+#!/usr/bin/env bash
+set -euo pipefail
+
+clear
+echo "=== Installing Hyprland ==="
+sudo pacman -S --noconfirm hyprland xorg-xwayland sddm
+sudo systemctl enable sddm
+
+read -rp "Do you want to install Caelestia dotfiles? [y/N] " answerfordots
 
 case "$answerfordots" in
     y|Y|yes|YES)
-yay -S caelestia-cli   
-caelestia install   
+        yay -S --noconfirm caelestia-cli
+        caelestia install
         ;;
     *)
-esac
+        echo "Skipping Caelestia dotfiles install."
         ;;
 esac
-

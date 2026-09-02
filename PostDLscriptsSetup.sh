@@ -1,11 +1,13 @@
-cls
+#!/usr/bin/env bash
+set -euo pipefail
 
-echo runing chmod +x for the install scripts...
+clear
 
+echo "Running chmod +x for the install scripts..."
 chmod +x curldl.sh
 chmod +x install.sh
 chmod +x installApps.sh
 chmod +x installhyprdots.sh
 chmod +x PostDLscriptsSetup.sh
 
-cls
+clear

@@ -1,49 +1,36 @@
-echo "Runing Pacman -Syu"
-sudo pacman -Syu
-echo "Installing Brave..."
+#!/usr/bin/env bash
+set -euo pipefail
+
+clear
+echo "=== Updating system ==="
+sudo pacman -Syu --noconfirm
+
+echo "=== Installing core packages ==="
+sudo pacman -S --noconfirm --needed \
+    git \
+    base-devel \
+    vlc \
+    kitty \
+    fastfetch \
+    tree \
+    7zip \
+    flatpak
+
+echo "=== Installing Brave ==="
 curl -fsS https://dl.brave.com/install.sh | sh
 
-echo "Installing VLC..."
-sudo pacman -S vlc
+echo "=== Adding Flathub and installing Flatpak apps ==="
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install --noninteractive --assumeyes flathub com.valvesoftware.Steam
 
-echo "Installing Git..."
-sudo pacman -S git
+echo "=== Installing yay (AUR helper) ==="
+if ! command -v yay >/dev/null 2>&1; then
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay
+    makepkg -si --noconfirm
+    cd -
+else
+    echo "yay already installed, skipping."
+fi
 
-echo "Installing Kitty..."
-sudo pacman -S kitty
-
-echo "Installing Git and base-devel..."
-sudo pacman -S --needed git base-devel
-
-echo "Installing Fastfetch..."
-sudo pacman -S fastfetch
-
-echo "Installing Tree..."
-sudo pacman -S tree
-
-echo "Installing 7zip..."
-sudo pacman -S 7zip
-
-echo "Installing Flatpak..."
-sudo pacman -S flatpak
-
-echo "Installing Pamac GTK..."
-sudo pacman -S pamac-gtk
-
-echo "Installing Flathub..."
-sudo flatpak install flathub
-
-echo "Installing Flathub..."
-flatpak install flathub
-
-echo "Installing Steam..."
-flatpak install flathub com.valvesoftware.Steam
-
-echo "Cloning yay..."
-git clone https://aur.archlinux.org/yay.git
-
-echo "Entering yay directory..."
-cd yay
-
-echo "Building yay..."
-makepkg -si
+echo "=== Install complete ==="

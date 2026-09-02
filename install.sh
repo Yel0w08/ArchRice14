@@ -1,16 +1,21 @@
-echo runing PostDLscriptsSetup.sh..
+#!/usr/bin/env bash
+set -euo pipefail
+
+clear
+echo "Running PostDLscriptsSetup.sh..."
 chmod +x PostDLscriptsSetup.sh
 ./PostDLscriptsSetup.sh
-echo executing installApps.sh...
+
+echo "Executing installApps.sh..."
 ./installApps.sh
 
-read -rp "Do you want to install  hyperland ? [y/N] " answer
+read -rp "Do you want to install Hyprland? [y/N] " answer
 
 case "$answer" in
     y|Y|yes|YES)
-./installhyprdots.sh
+        ./installhyprdots.sh
         ;;
     *)
-esac
+        echo "Skipping Hyprland install."
         ;;
 esac
