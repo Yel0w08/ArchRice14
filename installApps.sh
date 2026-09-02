@@ -1,3 +1,5 @@
+echo "Runing Pacman -Syu"
+sudo pacman -Syu
 echo "Installing Brave..."
 curl -fsS https://dl.brave.com/install.sh | sh
 
