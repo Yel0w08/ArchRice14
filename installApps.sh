@@ -16,8 +16,7 @@ sudo pacman -S --noconfirm --needed \
     7zip \
     flatpak
 
-echo "=== Installing Brave ==="
-curl -fsS https://dl.brave.com/install.sh | sh
+
 
 echo "=== Adding Flathub and installing Flatpak apps ==="
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
