@@ -12,7 +12,6 @@ sudo pacman -Syu --noconfirm
 
 echo "=== Installing core packages ==="
 sudo pacman -S --noconfirm --needed \
-    git \
     base-devel \
     vlc \
     kitty \
