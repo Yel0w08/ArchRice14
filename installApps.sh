@@ -114,7 +114,8 @@ sudo pacman -S --noconfirm --needed \
     gnome-text-editor \
     mousepad \
     falkon \
-    epiphany
+    epiphany \
+    librewolf
 
 echo "=== Installing gaming ==="
 sudo pacman -S --noconfirm --needed \
