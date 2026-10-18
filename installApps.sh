@@ -137,16 +137,7 @@ fi
 
 echo "=== Installing AUR apps ==="
 yay -S --needed --noconfirm \
-    brave-origin-bin \
-    vscodium-bin \
-    zen-browser-bin \
-    helium-browser-bin \
-    localsend-bin \
-    swaylock-effects \
-    todoist-appimage \
-    equibop-bin \
-    ani-cli \
-    niriswitcher
+    helium-browser-bin
 
 echo "=== Adding Flathub and installing Flatpak apps ==="
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
