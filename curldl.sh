@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-clear
-if [ -d ArchRice14 ]; then
-    echo "ArchRice14 already exists, pulling latest..."
-    cd ArchRice14
-    git pull
+REPO_URL="https://github.com/Yel0w08/ArchRice14.git"
+REPO_DIR="ArchRice14"
+
+if [ ! -d "$REPO_DIR/.git" ]; then
+    git clone "$REPO_URL" "$REPO_DIR"
 else
-    git clone https://github.com/Yel0w08/ArchRice14.git
-    cd ArchRice14
+    echo "Repo already present, pulling latest..."
+    git -C "$REPO_DIR" pull --ff-only
 fi
 
-echo "Setting up the install scripts..."
-chmod +x PostDLscriptsSetup.sh
-./PostDLscriptsSetup.sh
-
-echo "Executing install.sh"
-./install.sh
+cd "$REPO_DIR"
+chmod +x ./*.sh
+exec ./install.sh

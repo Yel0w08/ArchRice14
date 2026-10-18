@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+cd "$(dirname "$(readlink -f "$0")")"
+
 clear
-echo "Running PostDLscriptsSetup.sh..."
-chmod +x PostDLscriptsSetup.sh
+chmod +x ./*.sh
 ./PostDLscriptsSetup.sh
 
 echo "Executing installApps.sh..."
