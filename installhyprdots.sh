@@ -16,7 +16,7 @@ enable_service() {
 }
 
 echo "=== Installing Hyprland ==="
-sudo pacman -S --noconfirm --needed hyprland xorg-xwayland sddm
+sudo pacman -S --noconfirm --needed hyprland xorg-xwayland sddm hyprlock pyside6
 
 if command -v rc-update >/dev/null 2>&1 && rc-update show 2>/dev/null | grep -qE '(^|[[:space:]])sddm([[:space:]]|$)'; then
     echo "SDDM already enabled, skipping."
@@ -41,3 +41,17 @@ case "$answerfordots" in
         echo "Skipping Caelestia dotfiles install."
         ;;
 esac
+
+# --- Install the riced lock screen + shell chooser + session scripts ----------
+echo "=== Installing riced lock screen and shell chooser ==="
+mkdir -p "$HOME/.config/hypr"
+cp -f "$(dirname "$0")/hypr/hyprlock.conf" "$HOME/.config/hypr/hyprlock.conf"
+cp -f "$(dirname "$0")/hypr/lock-session.sh" "$HOME/.config/hypr/lock-session.sh"
+chmod +x "$HOME/.config/hypr/lock-session.sh"
+cp -f "$(dirname "$0")/hypr/shell-chooser.py" "$HOME/.config/hypr/shell-chooser.py"
+chmod +x "$HOME/.config/hypr/shell-chooser.py"
+
+# Session entry scripts (SDDM will only show stock Hyprland; chooser handles shell pick)
+mkdir -p "$HOME/hyperland-sessions"
+cp -f "$(dirname "$0")/sessions/"*.sh "$HOME/"
+chmod +x "$HOME"/hyperland-*.sh

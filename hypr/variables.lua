@@ -53,7 +53,7 @@ return {
     volumeMax                  = 100,
     cursorTheme                = "sweet-cursors",
     cursorSize                 = 24,
-    sleepGestureCmd            = "loginctl suspend-then-hibernate",
+    sleepGestureCmd            = "systemctl suspend-then-hibernate",
 
     ------------------
     ---- KEYBINDS ----
@@ -139,9 +139,29 @@ return {
     kbShowSidebar              = "SUPER + N",
     kbClearNotifs              = "CTRL + ALT + C",
     kbShowPanels               = "SUPER + K",
+    -- No longer bound: SUPER + L is now handled by the session-aware dispatcher
+    -- in kbLockNoctalia below, which also covers Caelestia. Kept only so the key
+    -- name still resolves for anything that references it.
     kbLock                     = "SUPER + L",
     kbRestoreLock              = "SUPER + ALT + L",
+    -- Was SUPER + SHIFT + L, but this system runs Artix/OpenRC and has no
+    -- systemd, so the suspend-then-hibernate command never worked. The key is
+    -- now used for the lock screen; see kbSwaylock below.
     kbSleep                    = "SUPER + SHIFT + L",
+
+    -- Noctalia launcher. The caelestia:launcher bind above is a Caelestia IPC
+    -- global, so it does nothing under a noctalia session; this fills the gap.
+    kbLauncherNoctalia         = "SUPER + SUPER_L",
+
+    -- Session-aware lock. Handled by ~/.config/hypr/lock-session.sh, which
+    -- dispatches to whichever shell is running (Noctalia or Caelestia), falling
+    -- back to hyprlock. Note this is a different lock screen from kbSwaylock
+    -- (hyprlock) below, which is always hyprlock in either session.
+    kbLockNoctalia             = "SUPER + L",
+
+    -- Screen locking via hyprlock. SUPER + SHIFT + L is free now that kbSleep
+    -- is unused on this system. Config: ~/.config/hypr/hyprlock.conf
+    kbSwaylock                 = "SUPER + SHIFT + L",
 
     -- Clipboard and emoji picker
     kbClipboard                = "SUPER + V",

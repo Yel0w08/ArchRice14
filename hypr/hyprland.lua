@@ -84,3 +84,6 @@ require("hypr-user")
 
 -- HyprMod managed settings
 require("hyprland-gui")
+
+
+

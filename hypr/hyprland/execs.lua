@@ -27,8 +27,37 @@ hl.on("hyprland.start", function()
 
 
 
-    -- Start shell
-    hl.exec_cmd("caelestia shell -d")
+    -- Start the session's shell.
+    --
+    -- The shell is started HERE, by the compositor, on purpose. The session
+    -- scripts (~/hyperland-*.sh) used to start it themselves before the
+    -- compositor was up, polling `hyprctl` until Hyprland answered. On a cold
+    -- SDDM login that raced the compositor and left the session as plain
+    -- Hyprland with no shell.
+    --
+    -- Running it from hyprland.start removes the race entirely: this hook only
+    -- fires once the compositor is up, so a shell started here is always a child
+    -- of a live compositor.
+    --
+    -- The session scripts export HYPRLAND_SESSION_SHELL to say which shell they
+    -- want ("caelestia", "noctalia" or "none"). Anything else / unset means no
+    -- shell.
+    --
+    -- NOTE: do NOT kill `qs` after starting caelestia. `caelestia shell -d`
+    -- spawns and supervises `qs -c caelestia -n -d`, so killing it takes the
+    -- whole session down after ~5 seconds.
+    local session_shell = os.getenv("HYPRLAND_SESSION_SHELL")
+
+    if session_shell == "caelestia" then
+        hl.exec_cmd("caelestia shell -d")
+    elseif session_shell == "noctalia" then
+        hl.exec_cmd("noctalia -d")
+    end
+    -- If no shell was chosen by a session script, show the graphical chooser
+    -- so the user can pick one at boot instead of committing at the greeter.
+    if not session_shell then
+        hl.exec_cmd("python3 " .. os.getenv("HOME") .. "/.config/hypr/shell-chooser.py")
+    end
 end)
 
 -- Resizer listeners

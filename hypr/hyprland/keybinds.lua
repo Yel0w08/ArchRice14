@@ -58,13 +58,36 @@ create_bind(
         return normalise_keybind(key) == launcher_default and release or nil
     end
 )
+-- Noctalia launcher on the same key. `caelestia:launcher` above is a Caelestia
+-- IPC global and is harmless when caelestia is not running, so both binds sit on
+-- SUPER: whichever shell is up answers. No existing keybind is removed.
+create_bind(
+    vars.kbLauncherNoctalia,
+    hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"),
+    function(key)
+        return normalise_keybind(key) == launcher_default and release or nil
+    end
+)
 
 -- Misc
 create_bind(vars.kbSession, hl.dsp.global("caelestia:session"))
 create_bind(vars.kbShowSidebar, hl.dsp.global("caelestia:sidebar"))
 create_bind(vars.kbClearNotifs, hl.dsp.global("caelestia:clearNotifs"), locked)
 create_bind(vars.kbShowPanels, hl.dsp.global("caelestia:showall"))
-create_bind(vars.kbLock, hl.dsp.global("caelestia:lock"))
+
+-- NOTE: the original `create_bind(vars.kbLock, hl.dsp.global("caelestia:lock"))`
+-- was removed here on purpose. It now lives inside the dispatcher below, which
+-- calls the same Caelestia lock when a Caelestia session is detected. Keeping
+-- both would fire Caelestia's lock twice on SUPER + L.
+--
+-- Session-aware lock. Picks the right lock screen for whichever shell is up:
+--   Noctalia  -> noctalia msg session lock
+--   Caelestia -> qs -c caelestia ipc call lock lock
+--   neither   -> hyprlock, so the key always locks something
+-- See ~/.config/hypr/lock-session.sh.
+--
+-- NOTE: this is NOT the same lock screen as kbSwaylock (hyprlock) below.
+create_bind(vars.kbLockNoctalia, hl.dsp.exec_cmd("~/.config/hypr/lock-session.sh"))
 
 -- Restore lock
 create_bind(vars.kbRestoreLock, function()
@@ -171,6 +194,21 @@ create_bind(vars.kbRecord, hl.dsp.exec_cmd("caelestia record"))
 create_bind(vars.kbRecordSound, hl.dsp.exec_cmd("caelestia record -s"))
 create_bind(vars.kbRecordRegion, hl.dsp.exec_cmd("caelestia record -r"))
 create_bind(vars.kbColorPicker, hl.dsp.exec_cmd("hyprpicker -a"))
+
+-- Screen lock (hyprlock). Flat opaque background, no blur, nothing visible.
+-- Config: ~/.config/hypr/hyprlock.conf
+--
+-- hyprlock EXITS WITHOUT LOCKING if it cannot find its config, so the guard
+-- below refuses to run it when the file is missing -- silently doing nothing is
+-- safer than a session that only looks locked. hyprlock also daemonizes itself,
+-- so no trailing `&` is needed.
+create_bind(
+    vars.kbSwaylock,
+    hl.dsp.exec_cmd(
+        "test -r ~/.config/hypr/hyprlock.conf || { notify-send -u critical 'Lock failed' 'hyprlock.conf is missing; session NOT locked'; exit 1; }; pkill -x hyprlock; hyprlock"
+    ),
+    locked
+)
 
 -- Brightness
 create_bind("XF86MonBrightnessUp", hl.dsp.global("caelestia:brightnessUp"), locked)
