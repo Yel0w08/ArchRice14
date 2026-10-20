@@ -55,3 +55,14 @@ chmod +x "$HOME/.config/hypr/shell-chooser.py"
 mkdir -p "$HOME/hyperland-sessions"
 cp -f "$(dirname "$0")/sessions/"*.sh "$HOME/"
 chmod +x "$HOME"/hyperland-*.sh
+
+# --- Install caelestia user config, noctalia settings, uwsm env, qtengine colors ---
+echo "=== Installing caelestia/noctalia/uwsm/qtengine configs ==="
+mkdir -p "$HOME/.config/caelestia" "$HOME/.config/uwsm" "$HOME/.config/qtengine"
+mkdir -p "$HOME/.local/state/noctalia"
+cp -f "$(dirname "$0")/caelestia/shell.json" "$HOME/.config/caelestia/shell.json"
+cp -f "$(dirname "$0")/caelestia/hypr-user.lua" "$HOME/.config/caelestia/hypr-user.lua"
+cp -f "$(dirname "$0")/caelestia/hypr-vars.lua" "$HOME/.config/caelestia/hypr-vars.lua"
+cp -f "$(dirname "$0")/noctalia/settings.toml" "$HOME/.local/state/noctalia/settings.toml"
+cp -f "$(dirname "$0")/uwsm/env-hyprland" "$HOME/.config/uwsm/env-hyprland"
+cp -f "$(dirname "$0")/qtengine/caelestia.colors" "$HOME/.config/qtengine/caelestia.colors"

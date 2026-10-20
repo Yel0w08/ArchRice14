@@ -1,0 +1,47 @@
+{
+    "appearance": {
+        "transparency": {
+            "enabled": false
+        }
+    },
+    "bar": {
+        "persistent": true,
+        "showOnHover": true
+    },
+    "dashboard": {
+        "showClockSeconds": false
+    },
+    "general": {
+        "apps": {
+            "explorer": [
+                "dolphin"
+            ],
+            "playback": [
+                "/usr/bin/vlc",
+                "--started-from-file"
+            ],
+            "terminal": [
+                "kitty"
+            ]
+        }
+    },
+    "launcher": {
+        "favouriteApps": [
+            "helium"
+        ]
+    },
+    "notifs": {
+        "openExpanded": true
+    },
+    "services": {
+        "defaultPlayer": "Mozilla zen"
+    },
+    "sidebar": {
+        "enabled": true
+    },
+    "utilities": {
+        "toasts": {
+            "nowPlaying": false
+        }
+    }
+}
